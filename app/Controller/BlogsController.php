@@ -5,6 +5,7 @@ class BlogsController extends AppController {
 
 	public function index() {
 		$this->set('posts', $this->Blog->find('all'));
+		$this->set('title_for_layout', '記事一覧');
 	}
 
 	public function view($id = null) {
@@ -16,8 +17,10 @@ class BlogsController extends AppController {
 			throw new NotFoundException(__('Invalid post'));
 		}
 		$this->set('post', $post);
+		$this->set('title_for_layout', '記事詳細');
 	}
 	public function add() {
+		$this->set('title_for_layout', '記事投稿');
 		if ($this->request->is('post')) {
 			$this->Blog->create();
 			if ($this->Blog->save($this->request->data)) {
@@ -35,6 +38,7 @@ class BlogsController extends AppController {
 		if (!$post) {
 			throw new NotFoundException(__('Invalid post'));
 		}
+		$this->set('title_for_layout', '記事編集');
 		if ($this->request->is(array('post', 'put'))) {
 			$this->Blog->id = $id;
 			if ($this->Blog->save($this->request->data)) {
