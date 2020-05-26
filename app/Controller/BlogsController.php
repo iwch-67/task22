@@ -4,6 +4,9 @@ class BlogsController extends AppController {
 	public $components = array('Flash');
 
 	public function index() {
+		$user = $this->Auth->user();
+		$this->set('user', $user);
+		var_dump($user);
 		$this->set('posts', $this->Blog->find('all'));
 		$this->set('title_for_layout', '記事一覧');
 	}
@@ -23,6 +26,7 @@ class BlogsController extends AppController {
 		$this->set('title_for_layout', '記事投稿');
 		if ($this->request->is('post')) {
 			$this->Blog->create();
+			$this->request->data['Blog']['user_id'] = $this->Auth->user('id');
 			if ($this->Blog->save($this->request->data)) {
 				$this->Flash->success(__('投稿が保存されました'));
 				return $this->redirect(array('action' => 'index'));
@@ -61,6 +65,18 @@ class BlogsController extends AppController {
 			$this->Flash->error(__('データ削除できませんでした'));
 		}
 		return $this->redirect(array('action' => 'index'));
+	}
+	public function isAuthorized($user) {
+		if ($this->action === 'add') {
+			return true;
+		}
+		if (is_array($this->action, array('edit', 'delete'))) {
+			$postId = (int) $this->request->params['password'][0];
+			if ($this->Blog->isOwnedBy($postId, $user['id'])) {
+				return true;
+			}
+		}
+		return parent::isAuthorized($user);
 	}
 }
 ?>
