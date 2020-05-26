@@ -1,6 +1,26 @@
 <!-- Files: /app/View/Blogs/index.ctp -->
 <h1>投稿一覧</h1>
 <?php
+if (isset($user)) {
+	echo $this->Html->link(
+		'ログアウト',
+		array(
+			'controller' => 'users',
+			'action' => 'logout'
+		)
+	);
+} else {
+	echo $this->Html->link(
+		'ログイン',
+		array(
+			'controller' => 'users',
+			'action' => 'login'
+		)
+	);
+}
+?>
+
+<?php
 echo $this->Html->link(
 	'新規投稿',
 	array(
