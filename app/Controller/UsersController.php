@@ -5,9 +5,10 @@ class UsersController extends AppController {
 	public function beforeFilter() {
 		parent::beforeFilter();
 		//ユーザー自身による登録とログアウトを許可する
-		$this->Auth->allow('add', 'login', 'logout');
+		$this->Auth->allow('add', 'logout');
 	}
 	public function login() {
+		$this->set('title_for_layout', 'ログイン');
 		//フォームから情報が送信された場合、認証を実施
 		if ($this->request->is('post')) {
 			//認証処理を実施
@@ -20,12 +21,8 @@ class UsersController extends AppController {
 		}
 	}
 	public function logout() {
+		$this->Flash->success(__('ログアウトしました'));
 		$this->redirect($this->Auth->logout());
-	}
-
-	public function index() {
-		$this->set('posts', $this->Blog->find('all'));
-		$this->set('title_for_layout', '記事一覧');
 	}
 
 	public function add() {
@@ -35,8 +32,8 @@ class UsersController extends AppController {
 			if ($this->User->save($this->request->data)) {
 				$this->Flash->success(__('ユーザー登録されました'));
 				return $this->redirect(array(
-					'controller' => 'blogs',
-					'action' => 'index'
+					'controller' => 'users',
+					'action' => 'login'
 				));
 			}
 			$this->Flash->error(__('ユーザー登録に失敗しました。再度お試しください'));
