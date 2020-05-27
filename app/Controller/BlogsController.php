@@ -6,8 +6,10 @@ class BlogsController extends AppController {
 	public function index() {
 		$user = $this->Auth->user();
 		$this->set('user', $user);
-		var_dump($user);
-		$this->set('posts', $this->Blog->find('all'));
+		$options = array(
+			'order' => array('Blog.created DESC')
+		);
+		$this->set('posts', $this->Blog->find('all', $options));
 		$this->set('title_for_layout', '記事一覧');
 	}
 
@@ -60,23 +62,26 @@ class BlogsController extends AppController {
 			throw new MethodNotAllowedException();
 		}
 		if ($this->Blog->delete($id)) {
-			$this->Flash->success(__('投稿は削除されました'));
+			$this->Flash->success(__('投稿は削除されました', h($id)));
 		} else {
-			$this->Flash->error(__('データ削除できませんでした'));
+			$this->Flash->error(__('データ削除できませんでした', h($id)));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
 	public function isAuthorized($user) {
+		//登録済みユーザーは投稿可能
 		if ($this->action === 'add') {
 			return true;
 		}
-		if (is_array($this->action, array('edit', 'delete'))) {
-			$postId = (int) $this->request->params['password'][0];
-			if ($this->Blog->isOwnedBy($postId, $user['id'])) {
+		if (in_array($this->action, array('edit', 'delete'))) {
+			//URLパラメータを代入
+			$blogId = (int)$this->request->params['pass'][0];
+			if ($this->Blog->isOwnedBy($blogId, $user['id'])) {
 				return true;
+			} else {
+				throw new MethodNotAllowedException('他人の投稿は編集できません');
 			}
 		}
-		return parent::isAuthorized($user);
 	}
 }
 ?>
