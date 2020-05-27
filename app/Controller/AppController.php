@@ -40,9 +40,8 @@ class AppController extends Controller {
 				'action' => 'index'
 			),
 			'logoutRedirect' => array(
-				'controller' => 'pages',
-				'action' => 'display',
-				'home'
+				'controller' => 'users',
+				'action' => 'login'
 			),
 			'authenticate' => array(
 				'Form' => array(
@@ -51,15 +50,10 @@ class AppController extends Controller {
 						'username' => 'email'
 					)
 				)
-			)
+			),
+			'authorize' => array('Controller')
 		)
 	);
-	public function isAuthorized($user) {
-		if (isset($user['role']) && $user['role'] === 'admin') {
-			return true;
-		}
-		return false;
-	}
 
 	public function beforeFilter() {
 		$this->Auth->allow('index', 'view');
