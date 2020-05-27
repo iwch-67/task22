@@ -1,5 +1,9 @@
 <!-- Files: /app/View/Blogs/index.ctp -->
 <h1>投稿一覧</h1>
+<?php if (isset($user)): ?>
+<p>ログイン中のユーザー: <?php echo $user['username'] ?></p>
+<?php endif; ?>
+
 <?php
 if (isset($user)) {
 	echo $this->Html->link(
@@ -33,6 +37,7 @@ echo $this->Html->link(
 <tr>
 <th>Id</th>
 <th>Title</th>
+<th>Postedby</th>
 <th>Actions</th>
 <th>Created</th>
 </tr>
@@ -50,8 +55,10 @@ echo $this->Html->link(
 );
 ?>
 </td>
+<td><?php echo $post['User']['username']; ?></td>
 <td>
 <?php
+if ($user['id'] == $post['Blog']['user_id']) {
 echo $this->Form->postLink(
 	'Delete',
 	array(
@@ -70,6 +77,7 @@ echo $this->Html->link(
 		$post['Blog']['id']
 	)
 );
+}
 ?>
 </td>
 <td><?php echo $post['Blog']['created']; ?></td>
