@@ -7,6 +7,14 @@
 <?php
 if (isset($user)) {
 	echo $this->Html->link(
+		'新規投稿',
+		array(
+			'controller' => 'blogs',
+			'action' => 'add'
+		)
+	);
+	echo ' | ';
+	echo $this->Html->link(
 		'ログアウト',
 		array(
 			'controller' => 'users',
@@ -14,6 +22,14 @@ if (isset($user)) {
 		)
 	);
 } else {
+	echo $this->Html->link(
+		'新規登録',
+		array(
+			'controller' => 'users',
+			'action' => 'add'
+		)
+	);
+	echo ' | ';
 	echo $this->Html->link(
 		'ログイン',
 		array(
@@ -24,15 +40,6 @@ if (isset($user)) {
 }
 ?>
 
-<?php
-echo $this->Html->link(
-	'新規投稿',
-	array(
-		'controller' => 'blogs',
-		'action' => 'add'
-	)
-);
-?>
 <table>
 <tr>
 <th>Id</th>
