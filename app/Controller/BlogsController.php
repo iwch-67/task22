@@ -79,7 +79,8 @@ class BlogsController extends AppController {
 			if ($this->Blog->isOwnedBy($blogId, $user['id'])) {
 				return true;
 			} else {
-				throw new MethodNotAllowedException('他人の投稿は編集できません');
+				$this->Flash->error(__('他人の投稿は編集できません'));
+				return $this->redirect(array('action' => 'index'));
 			}
 		}
 	}
