@@ -2,6 +2,7 @@
 App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 class User extends AppModel {
+
 	public $validate = array(
 		'username' => array(
 			'empty' => array(
@@ -49,6 +50,29 @@ class User extends AppModel {
 			'empty' => array(
 				'rule' => 'notBlank',
 				'message' => '必ず入力してください'
+			)
+		),
+		'image' => array(
+			'extension' => array(
+				'rule' => array('extension', array(
+					'jpg', 'jpeg', 'png', 'gif'
+				)),
+				'message' => '拡張子はjpg, jpeg, png, gifのみ許容されます',
+				'allowEmpty' => true,
+			),
+			'mimetype' => array(
+				'rule' => array('mimeType', array(
+					'image/jpeg', 'image/png', 'image/gif'
+				)),
+				'message' => 'mime-typeエラー'
+			),
+			'maxFileSize' => array(
+				'rule' => array('fileSize', '<=', '10MB'),
+				'message' => 'ファイルサイズは10MB以下にしてください'
+			),
+			'minFileSize' => array(
+				'rule' => array('fileSize', '>', 0),
+				'message' => 'ファイルの中身が空です'
 			)
 		)
 	);

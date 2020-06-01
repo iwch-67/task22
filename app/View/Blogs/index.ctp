@@ -62,7 +62,17 @@ echo $this->Html->link(
 );
 ?>
 </td>
-<td><?php echo $post['User']['username']; ?></td>
+<td>
+<?php
+echo $this->Html->link(
+	$post['User']['username'],
+	array('controller' => 'users',
+		'action' => 'view',
+		$post['Blog']['user_id']
+	)
+);
+?>
+</td>
 <td>
 <?php
 if ($user['id'] == $post['Blog']['user_id']) {
