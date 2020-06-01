@@ -1,4 +1,3 @@
-<!-- File: /app/View/Blogs/view.ctp -->
 
 <h1><?php echo h($post['Blog']['title']); ?></h1>
 <p>
